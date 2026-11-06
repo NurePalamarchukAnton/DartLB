@@ -1,5 +1,14 @@
 import 'parsers.dart';
 
+/// Критерій сортування рецептів.
+enum RecipeSortBy {
+  /// За часом приготування.
+  cookMinutes,
+
+  /// За кількістю інгредієнтів.
+  ingredientCount,
+}
+
 /// Фільтрує рецепти за кухнею [cuisine].
 List<RecipeRecord> filterByCuisine(List<RecipeRecord> recipes, String cuisine) {
   return recipes.where((recipe) => recipe.cuisine == cuisine).toList();
@@ -10,7 +19,8 @@ List<String> toShortLabels(List<RecipeRecord> recipes) {
   return recipes
       .map(
         (recipe) =>
-            '${recipe.title} (${recipe.cookMinutes} хв, ${recipe.difficulty})',
+            '${recipe.title} (${recipe.cookMinutes} хв, '
+            '${recipe.ingredients.length} інгр., ${recipe.difficulty})',
       )
       .toList();
 }
@@ -42,19 +52,32 @@ Map<String, double> averageCookByCuisine(List<RecipeRecord> recipes) {
   };
 }
 
-/// Сортує рецепти за часом, потім за кількістю інгредієнтів.
+/// Сортує рецепти за обраним критерієм [by] з напрямом [ascending].
+///
+/// Другий критерій застосовується лише при рівності за основним.
 List<RecipeRecord> sortRecipes(
   List<RecipeRecord> recipes, {
+  RecipeSortBy by = RecipeSortBy.cookMinutes,
   bool ascending = true,
 }) {
   final copy = [...recipes];
   copy.sort((a, b) {
-    final byTime = a.cookMinutes.compareTo(b.cookMinutes);
-    if (byTime != 0) {
-      return ascending ? byTime : -byTime;
+    final primary = switch (by) {
+      RecipeSortBy.cookMinutes => a.cookMinutes.compareTo(b.cookMinutes),
+      RecipeSortBy.ingredientCount => a.ingredients.length.compareTo(
+        b.ingredients.length,
+      ),
+    };
+    if (primary != 0) {
+      return ascending ? primary : -primary;
     }
-    final byIngredients = a.ingredients.length.compareTo(b.ingredients.length);
-    return ascending ? byIngredients : -byIngredients;
+    final secondary = switch (by) {
+      RecipeSortBy.cookMinutes => a.ingredients.length.compareTo(
+        b.ingredients.length,
+      ),
+      RecipeSortBy.ingredientCount => a.cookMinutes.compareTo(b.cookMinutes),
+    };
+    return ascending ? secondary : -secondary;
   });
   return copy;
 }

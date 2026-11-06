@@ -1,0 +1,62 @@
+﻿=== Розбір вхідних даних ===
+Успішно: 16, помилок: 3
+  ! Incomplete;Italian;30 -> очікувано 6 полів, отримано 3
+  ! BadTime;Ukrainian;slow;easy;potato:2;2025-01-10 -> некоректний час: slow
+  ! BadAmount;Greek;50;easy;olive:xx|feta:2;2025-01-10 -> некоректна кількість: xx
+
+=== Валідація ===
+BadDiff: складність "extreme" не з {easy, medium, hard}
+
+=== Конвеєри ===
+Italian (1): Carbonara (25 хв, 4 інгр., easy)
+Середній час: 67.8 хв
+
+=== Групування за кухнею ===
+Ukrainian: 90.0 хв
+Italian: 25.0 хв
+Japanese: 90.0 хв
+Mexican: 22.5 хв
+French: 91.7 хв
+Thai: 35.0 хв
+Middle Eastern: 32.5 хв
+Spanish: 70.0 хв
+American: 20.0 хв
+Greek: 100.0 хв
+Vietnamese: 180.0 хв
+
+=== Сортування за часом (зростання) ===
+Книга рецептів: звіт
+Усього записів: 16
+Середній час: 67.8 хв
+Критерій: RecipeSortBy.cookMinutes, ascending=true
+Топ-5:
+1. Guacamole | Mexican | 15 хв | 4 інгр. | easy
+2. Hummus | Middle Eastern | 20 хв | 4 інгр. | easy
+3. Pancakes | American | 20 хв | 4 інгр. | easy
+4. Carbonara | Italian | 25 хв | 4 інгр. | easy
+5. Tacos | Mexican | 30 хв | 4 інгр. | easy
+
+=== Сортування за кількістю інгредієнтів (спадання) ===
+Книга рецептів: звіт
+Усього записів: 16
+Середній час: 67.8 хв
+Критерій: RecipeSortBy.ingredientCount, ascending=false
+Топ-5:
+1. Croissant / French / 180 хв / 4 інгр. / hard
+2. Pho / Vietnamese / 180 хв / 4 інгр. / hard
+3. Ramen / Japanese / 120 хв / 4 інгр. / hard
+4. Moussaka / Greek / 100 хв / 4 інгр. / medium
+5. Borscht / Ukrainian / 90 хв / 4 інгр. / medium
+
+=== Замикання cookAtMost(30) ===
+Carbonara (25 хв, 4 інгр., easy), Guacamole (15 хв, 4 інгр., easy), Hummus (20 хв, 4 інгр., easy), Pancakes (20 хв, 4 інгр., easy), Tacos (30 хв, 4 інгр., easy)
+
+=== Список покупок (Italian) ===
+egg: 3.0, guanciale: 150.0, pecorino: 50.0, spaghetti: 400.0
+
+=== Маскування кухні та вік запису ===
+Middle Eastern -> Middle E. | додано 2025-04-02, вік запису: 584 днів
+
+=== Найдовший рецепт ===
+Croissant (180 хв)
+Оброблено лічильником: 16

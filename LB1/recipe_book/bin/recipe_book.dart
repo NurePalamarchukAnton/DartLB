@@ -5,7 +5,6 @@ void main(List<String> arguments) {
   final recipes = <RecipeRecord>[];
   final parseErrors = <String>[];
 
-  var processedCount = 0;
   for (final line in rawRecipeLines) {
     final outcome = parseLine(line);
     final recipe = outcome.recipe;
@@ -14,7 +13,7 @@ void main(List<String> arguments) {
       continue;
     }
     recipes.add(recipe);
-    processedCount = counter();
+    counter.increment();
   }
 
   print('=== Розбір вхідних даних ===');
@@ -42,11 +41,26 @@ void main(List<String> arguments) {
     print('${entry.key}: ${entry.value.toStringAsFixed(1)} хв');
   }
 
-  print('\n=== Сортування (за зростанням часу) ===');
-  print(buildReport(recipes, topCount: 5));
+  print('\n=== Сортування за часом (зростання) ===');
+  print(
+    buildReport(
+      recipes,
+      topCount: 5,
+      by: RecipeSortBy.cookMinutes,
+      ascending: true,
+    ),
+  );
 
-  print('=== Сортування (за спаданням) ===');
-  print(buildReport(recipes, topCount: 3, ascending: false, separator: ' / '));
+  print('=== Сортування за кількістю інгредієнтів (спадання) ===');
+  print(
+    buildReport(
+      recipes,
+      topCount: 5,
+      by: RecipeSortBy.ingredientCount,
+      ascending: false,
+      separator: ' / ',
+    ),
+  );
 
   print('=== Замикання cookAtMost(30) ===');
   final quick = recipes.where(cookAtMost(30)).toList();
@@ -56,13 +70,14 @@ void main(List<String> arguments) {
   print(buildShoppingList(italian).join(', '));
 
   print('\n=== Маскування кухні та вік запису ===');
-  final sample = recipes.first;
+  final forMask = recipes.firstWhere((recipe) => recipe.cuisine.contains(' '));
   print(
-    '${maskCuisine(sample.cuisine)} | '
-    'вік запису: ${ageInDays(sample.title)} днів',
+    '${forMask.cuisine} -> ${maskCuisine(forMask.cuisine)} | '
+    'додано ${forMask.addedAt.toIso8601String().substring(0, 10)}, '
+    'вік запису: ${ageInDays(forMask.addedAt)} днів',
   );
 
   print('\n=== Найдовший рецепт ===');
   print(longestRecipeLabel(recipes));
-  print('Оброблено лічильником: $processedCount');
+  print('Оброблено лічильником: ${counter.read()}');
 }

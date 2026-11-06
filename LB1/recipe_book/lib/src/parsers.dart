@@ -10,10 +10,14 @@ typedef RecipeRecord = ({
   int cookMinutes,
   String difficulty,
   List<Ingredient> ingredients,
+  DateTime addedAt,
 });
 
 /// Результат розбору одного рядка.
 typedef ParseOutcome = ({RecipeRecord? recipe, String? error});
+
+/// Лічильник оброблених записів: збільшення й читання без зміни.
+typedef ProcessedCounter = ({void Function() increment, int Function() read});
 
 /// Регулярний вираз для перевірки назви рецепта з іменованою групою.
 final RegExp titlePattern = RegExp(r"^(?<title>[A-Za-z0-9 \-']+)$");
@@ -33,12 +37,16 @@ ParseOutcome parseLine(String line) {
   final cookMinutes = int.tryParse(parts[2].trim());
   final difficulty = parts[3].trim().toLowerCase();
   final ingredientsRaw = parts[4].trim();
+  final addedAt = DateTime.tryParse(parts[5].trim());
 
   if (title.isEmpty || cuisine.isEmpty || ingredientsRaw.isEmpty) {
     return (recipe: null, error: 'порожнє текстове поле');
   }
   if (cookMinutes == null) {
     return (recipe: null, error: 'некоректний час: ${parts[2]}');
+  }
+  if (addedAt == null) {
+    return (recipe: null, error: 'некоректна дата: ${parts[5]}');
   }
 
   final ingredients = <Ingredient>[];
@@ -61,6 +69,7 @@ ParseOutcome parseLine(String line) {
       cookMinutes: cookMinutes,
       difficulty: difficulty,
       ingredients: ingredients,
+      addedAt: addedAt,
     ),
     error: null,
   );
@@ -72,31 +81,24 @@ bool isTitleFormatValid(String title) {
   return match?.namedGroup('title') != null;
 }
 
-/// Маскує назву кухні, залишаючи першу літеру другого слова за наявності.
+/// Маскує назву кухні, залишаючи ініціал другого слова.
 String maskCuisine(String cuisine) {
-  return cuisine.replaceAllMapped(RegExp(r'^(?<first>\S+)\s+(?<last>\S+)$'), (
-    match,
-  ) {
-    final regexMatch = match as RegExpMatch;
-    final first = regexMatch.namedGroup('first') ?? '';
-    final last = regexMatch.namedGroup('last') ?? '';
-    if (last.isEmpty) {
-      return cuisine;
-    }
-    return '$first ${last[0]}.';
-  });
+  final match = RegExp(r'^(?<first>\S+)\s+(?<last>\S+)$').firstMatch(cuisine);
+  if (match == null) {
+    return cuisine;
+  }
+  final first = match.namedGroup('first') ?? '';
+  final last = match.namedGroup('last') ?? '';
+  if (last.isEmpty) {
+    return cuisine;
+  }
+  return '$first ${last[0]}.';
 }
 
-/// Умовна дата додавання рецепта до збірки (для арифметики дат).
-DateTime publishedAt(String title) {
-  final seed = title.hashCode.abs() % 365;
-  return DateTime(2025, 1, 1).add(Duration(days: seed));
-}
-
-/// Вік запису рецепта в днях через DateTime.difference.
-int ageInDays(String title, {DateTime? referenceDate}) {
+/// Вік запису рецепта в днях від дати додавання [addedAt].
+int ageInDays(DateTime addedAt, {DateTime? referenceDate}) {
   final now = referenceDate ?? DateTime.now();
-  return now.difference(publishedAt(title)).inDays;
+  return now.difference(addedAt).inDays;
 }
 
 /// Фабрика предикатів за максимальною тривалістю — приклад замикання.
@@ -105,12 +107,14 @@ bool Function(RecipeRecord) cookAtMost(int minutes) {
 }
 
 /// Лічильник успішно оброблених записів із захопленням змінної.
-int Function() createProcessedCounter() {
+ProcessedCounter createProcessedCounter() {
   var count = 0;
-  return () {
-    count += 1;
-    return count;
-  };
+  return (
+    increment: () {
+      count += 1;
+    },
+    read: () => count,
+  );
 }
 
 /// Формує текстовий список покупок з кількох рецептів.
