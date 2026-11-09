@@ -1,0 +1,5 @@
+﻿00:00 +0: loading test\recipe_book_test.dart
+00:00 +0: test\recipe_book_test.dart: Recipe.fromCsv створює об’єкт
+00:00 +1: test\recipe_book_test.dart: Repository зберігає за id
+00:00 +2: test\recipe_book_test.dart: paceLabel використовує when
+00:00 +3: All tests passed!

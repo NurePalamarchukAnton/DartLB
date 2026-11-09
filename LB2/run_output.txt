@@ -1,0 +1,31 @@
+﻿=== ООП-книга рецептів ===
+Записів: 15, помилок розбору: 4
+  ! очікувано 5 полів, отримано 3
+  ! некоректний час: slow
+  ! невідома складність: extreme
+  ! некоректна кількість: xx
+
+=== == і hashCode у Set ===
+a == b: true, Set.length: 1
+
+=== Sealed CookStatus ===
+не розпочато -> new
+у процесі (50%) -> progress:50
+готово 2026-03-01 -> done:2026
+
+=== Домішка Auditable ===
+updated svc-1 at 2026-11-09 15:03:56.688903
+updated Borscht#Ukrainian at 2026-11-09 15:03:56.689908
+
+=== Розширення String ===
+Ukrainian
+
+=== Статистика (record) ===
+count=15, average=69.7
+
+=== Pattern matching ===
+Sushi Roll: середній
+Ramen: довгий
+
+=== Difficulty enum ===
+medium(2), hard(3)
