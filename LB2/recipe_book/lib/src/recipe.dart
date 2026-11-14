@@ -15,13 +15,19 @@ final class Recipe(
   static final Map<String, Recipe> _cache = {};
 
   @override
-  String get id => '$title#$cuisine';
+  String get id =>
+      '$title#$cuisine#$cookMinutes#${difficulty.label}#$_ingredientsKey';
 
   /// Час у годинах.
   double get cookHours => cookMinutes / 60;
 
   /// Кількість інгредієнтів.
   int get ingredientCount => ingredients.length;
+
+  String get _ingredientsKey =>
+      ingredients.map((i) => '${i.name}$amountSeparator${i.amount}').join(
+        ingredientSeparator,
+      );
 
   /// Іменований конструктор з CSV.
   factory Recipe.fromCsv(String line) {
@@ -57,7 +63,7 @@ final class Recipe(
     );
   }
 
-  /// Фабрика з кешуванням.
+  /// Фабрика з кешуванням за повним [id] (назва, кухня, час, складність, склад).
   factory Recipe.cached({
     required String title,
     required String cuisine,

@@ -19,6 +19,27 @@ void main() {
     expect(repo.findById(recipe.id)?.cookMinutes, 90);
   });
 
+  test('cached не змішує рецепти з однаковою назвою й кухнею', () {
+    final short = Recipe.cached(
+      title: 'Borscht',
+      cuisine: 'Ukrainian',
+      cookMinutes: 60,
+      difficulty: Difficulty.easy,
+      ingredients: [Ingredient('beet', 1)],
+    );
+    final long = Recipe.cached(
+      title: 'Borscht',
+      cuisine: 'Ukrainian',
+      cookMinutes: 120,
+      difficulty: Difficulty.hard,
+      ingredients: [Ingredient('beet', 2), Ingredient('potato', 3)],
+    );
+    expect(identical(short, long), isFalse);
+    expect(short.cookMinutes, 60);
+    expect(long.cookMinutes, 120);
+    expect(short.id == long.id, isFalse);
+  });
+
   test('paceLabel використовує when', () {
     final recipe = Recipe.fromCsv('Guacamole;Mexican;15;easy;avocado:3');
     expect(paceLabel(recipe), 'швидкий');
