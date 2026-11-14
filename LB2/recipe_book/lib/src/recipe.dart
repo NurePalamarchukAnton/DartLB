@@ -4,7 +4,10 @@ import 'entity.dart';
 import 'ingredient.dart';
 import 'sample_data.dart';
 
-/// Незмінний рецепт (первинний конструктор Dart 3.13).
+/// Рецепт із фіксованим змістом полів і журналом через [Auditable].
+///
+/// Поля страви (`title`, склад тощо) задаються конструктором і не
+/// перезаписуються; час оновлення з домішки лишається змінним через [touch].
 final class Recipe(
   final String title,
   final String cuisine,

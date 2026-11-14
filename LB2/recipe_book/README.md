@@ -19,7 +19,7 @@ dart test
 - `Repository` — узагальнене сховище
 - `CookStatus` — sealed-статуси приготування
 - `Difficulty` — enum зі членами
-- `Auditable` — домішка журналювання
+- `Auditable` — домішка журналювання (змінний `_updatedAt`; зміст `Recipe` лишається фіксованим)
 - `CatalogEntry` — інша гілка для тієї ж домішки
 - `analytics` — records і pattern matching
 
