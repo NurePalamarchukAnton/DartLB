@@ -1,6 +1,13 @@
 /// Інгредієнт із кількістю.
 final class Ingredient(final String name, final double amount) {
   @override
+  bool operator ==(Object other) =>
+      other is Ingredient && other.name == name && other.amount == amount;
+
+  @override
+  int get hashCode => Object.hash(name, amount);
+
+  @override
   String toString() => '$name:$amount';
 
   /// JSON-подання.

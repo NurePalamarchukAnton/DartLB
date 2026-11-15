@@ -85,20 +85,7 @@ final class Recipe(
       other.cuisine == cuisine &&
       other.cookMinutes == cookMinutes &&
       other.difficulty == difficulty &&
-      _sameIngredients(other.ingredients);
-
-  bool _sameIngredients(List<Ingredient> other) {
-    if (other.length != ingredients.length) {
-      return false;
-    }
-    for (var i = 0; i < ingredients.length; i++) {
-      if (ingredients[i].name != other[i].name ||
-          ingredients[i].amount != other[i].amount) {
-        return false;
-      }
-    }
-    return true;
-  }
+      _listEquals(ingredients, other.ingredients);
 
   @override
   int get hashCode => Object.hash(
@@ -106,8 +93,20 @@ final class Recipe(
     cuisine,
     cookMinutes,
     difficulty,
-    Object.hashAll(ingredients.map((e) => Object.hash(e.name, e.amount))),
+    Object.hashAll(ingredients),
   );
+
+  static bool _listEquals(List<Ingredient> a, List<Ingredient> b) {
+    if (a.length != b.length) {
+      return false;
+    }
+    for (var i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   @override
   String toString() =>

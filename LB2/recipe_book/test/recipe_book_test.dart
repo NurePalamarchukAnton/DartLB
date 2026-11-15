@@ -40,6 +40,14 @@ void main() {
     expect(short.id == long.id, isFalse);
   });
 
+  test('Ingredient підтримує == і hashCode', () {
+    final a = Ingredient('salt', 1);
+    final b = Ingredient('salt', 1);
+    final c = Ingredient('pepper', 1);
+    expect(a, equals(b));
+    expect({a, b, c}.length, 2);
+  });
+
   test('paceLabel використовує when', () {
     final recipe = Recipe.fromCsv('Guacamole;Mexican;15;easy;avocado:3');
     expect(paceLabel(recipe), 'швидкий');
