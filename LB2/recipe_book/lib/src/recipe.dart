@@ -8,6 +8,9 @@ import 'sample_data.dart';
 ///
 /// Поля страви (`title`, склад тощо) задаються конструктором і не
 /// перезаписуються; час оновлення з домішки лишається змінним через [touch].
+///
+/// [title] — назва страви, [cuisine] — кухня, [cookMinutes] — час у хвилинах,
+/// [difficulty] — складність, [ingredients] — склад.
 final class Recipe(
   final String title,
   final String cuisine,
@@ -17,6 +20,7 @@ final class Recipe(
 ) extends Entity with Auditable {
   static final Map<String, Recipe> _cache = {};
 
+  /// Унікальний ключ за назвою, кухнею, часом, складністю та складом.
   @override
   String get id =>
       '$title#$cuisine#$cookMinutes#${difficulty.label}#$_ingredientsKey';
@@ -78,6 +82,7 @@ final class Recipe(
     return _cache.putIfAbsent(recipe.id, () => recipe);
   }
 
+  /// Порівняння за всіма полями змісту, включно зі списком інгредієнтів.
   @override
   bool operator ==(Object other) =>
       other is Recipe &&
@@ -87,6 +92,7 @@ final class Recipe(
       other.difficulty == difficulty &&
       _listEquals(ingredients, other.ingredients);
 
+  /// Хеш за змістом рецепта.
   @override
   int get hashCode => Object.hash(
     title,
@@ -108,6 +114,7 @@ final class Recipe(
     return true;
   }
 
+  /// Короткий текстовий опис рецепта.
   @override
   String toString() =>
       'Recipe($title, $cuisine, $cookMinutes, ${difficulty.label})';

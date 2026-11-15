@@ -12,6 +12,7 @@ final class NotStarted extends CookStatus {
 
 /// Приготування в процесі.
 final class InProgress extends CookStatus {
+  /// Створює статус із відсотком готовності.
   InProgress(this.percent);
 
   /// Прогрес у відсотках.
@@ -23,6 +24,7 @@ final class InProgress extends CookStatus {
 
 /// Страву приготовано.
 final class Cooked extends CookStatus {
+  /// Створює статус із датою завершення.
   Cooked(this.finishedAt);
 
   /// Дата завершення.

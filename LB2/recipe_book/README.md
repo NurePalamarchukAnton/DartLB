@@ -27,7 +27,7 @@ dart test
 
 ## Залежності
 
-- `lints` — recommended-правила для `dart analyze`
+- `lints` — recommended плюс проєктні правила в `analysis_options.yaml` (strict-casts/inference, prefer_final_locals тощо)
 - `test` — у `dev_dependencies`, для перевірок fromCsv / Repository / paceLabel
 
 Пакет `path` прибрав: у ЛР2 шляхи не збираються, він лише був у шаблоні.

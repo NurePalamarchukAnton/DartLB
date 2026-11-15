@@ -1,12 +1,17 @@
 /// Інгредієнт із кількістю.
+///
+/// [name] — назва, [amount] — кількість у базових одиницях рецепта.
 final class Ingredient(final String name, final double amount) {
+  /// Порівняння за назвою та кількістю.
   @override
   bool operator ==(Object other) =>
       other is Ingredient && other.name == name && other.amount == amount;
 
+  /// Хеш за назвою та кількістю.
   @override
   int get hashCode => Object.hash(name, amount);
 
+  /// Текстове подання `name:amount`.
   @override
   String toString() => '$name:$amount';
 
