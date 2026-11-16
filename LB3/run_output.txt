@@ -1,0 +1,34 @@
+--- забутий await ---
+рядок після виклику без await
+пізній результат load: null
+--- Stopwatch ---
+послідовно: 1535 мс
+Future.wait: 515 мс
+--- помилки групи ---
+Future.wait: Bad state: збій операції
+ParallelWaitError values=(a, null, c) errors=(null, Bad state: збій операції, null)
+--- неспіймана async-помилка ---
+try/catch навколо виклику без await завершився одразу
+спіймано через catchError: Bad state: пізня помилка
+--- async* ---
+генератор створено, підписки ще немає
+watchAll: підписка активована
+отримано: Borscht
+отримано: Carbonara
+--- StreamController ---
+listen: added:Sample#Test#20#easy#salt:1.0
+listen: updated:Sample#Test#20#easy#salt:1.0
+listen: removed:x
+listen error: Bad state: помилка в потоці
+listen: removed:after-error
+підписку скасовано
+--- single vs broadcast ---
+повторна підписка single: Bad state: Stream has already been listened to.
+b1:1
+b2:1
+--- конвеєр Stream ---
+watchAll: підписка активована
+Carbonara, Guacamole, Hummus
+--- Isolate.run ---
+головний ізолят: 22044 за 29 мс, sharedCounter=1
+Isolate.run: 22044 за 34 мс, sharedCounter після=1 (було 1)
